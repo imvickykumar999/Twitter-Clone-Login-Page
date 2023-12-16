@@ -3,26 +3,23 @@ from functools import wraps
 import sqlite3 as sql
 
 app=Flask(__name__)
-app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']=''
-app.config['MYSQL_DB']='db_sample'
-app.config['MYSQL_CURSORCLASS']='DictCursor'
- 
+
 @app.route('/login',methods=['POST','GET'])
 def login():
     status=True
-    con=sql.connect("db_web.db")
+    con=sql.connect("db_sample.db")
 
     if request.method=='POST':
         email=request.form["email"]
         pwd=request.form["upass"]
         cur=con.cursor()
-        cur.execute("select * from users where EMAIL=%s and UPASS=%s",(email,pwd))
+        cur.execute("select UNAME from users where EMAIL=? and UPASS=?",(email,pwd))
         data=cur.fetchone()
+
+        print(data)
         if data:
             session['logged_in']=True
-            session['username']=data["UNAME"]
+            session['username']=data[0]
             flash('Login Successfully','success')
             return redirect('home')
         else:
@@ -42,7 +39,7 @@ def is_logged_in(f):
 @app.route('/reg',methods=['POST','GET'])
 def reg():
     status=False
-    con=sql.connect("db_web.db")
+    con=sql.connect("db_sample.db")
 
     if request.method=='POST':
         name=request.form["uname"]
