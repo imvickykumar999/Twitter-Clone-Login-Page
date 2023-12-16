@@ -12,27 +12,52 @@
 
   </head>
   <body>
-    <div class='container pt-3'>
 
-      {% with messages=get_flashed_messages(with_categories=true) %}
-        {% if messages %}
+    <nav class="navbar navbar-expand-md bg-light navbar-light">
+      <div class='container'>
+        <!-- Brand -->
+        <a class="navbar-brand" href="/">Flask-MySql Registraion, Login</a>
 
-          {% for category,message in messages %}
-            <div class='alert alert-{{category}}'>{{message}}</div>
-          {% endfor %}
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        {% endif %}
-      {% endwith %}
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav ml-auto">
+            {% if session.username %}
+              <li class="nav-item">
+                <a class="nav-link" href="/home">Welcome : {{session.username}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+                <li class="nav-item">
+              <a class="nav-link" href="/reg">Registration</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-    <a class='btn btn-warning' href="/">
-        <h4>
-            Home
-        </h4>
-    </a>
-
-      {% block body %}
-      {% endblock %}
-
+    <div class='container mt-4'>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    {% block body %}
+    {% endblock %}
     </div>
+    
   </body>
 </html>
