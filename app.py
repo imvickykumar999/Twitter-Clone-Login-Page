@@ -30,7 +30,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_extensions(file_name):
     return '.' in file_name and file_name.rsplit('.',1)[1].lower() in FILE_EXTENSIONS
 
-
 @app.route('/login',methods=['POST','GET'])
 def login():
     status=True
@@ -67,6 +66,9 @@ def is_logged_in(f):
 
 @app.route('/reg',methods=['POST','GET'])
 def reg():
+    # error = 'Only ADMIN can make CRUD Operation.'
+    # return render_template('404.html', error=error), 404
+
     status=False
     con=sql.connect("db_sample.db")
 
@@ -92,7 +94,6 @@ def logout():
 
 @app.route("/")
 @app.route("/index")
-@is_logged_in
 def index():
 
     con=sql.connect("db_web.db")
@@ -105,6 +106,7 @@ def index():
 
 
 @app.route("/add_user",methods=['POST','GET'])
+@is_logged_in
 def add_user():
 
     if request.method=='POST':
@@ -136,6 +138,7 @@ def add_user():
 
 
 @app.route("/edit_user/<string:uid>",methods=['POST','GET'])
+@is_logged_in
 def edit_user(uid):
 
     if request.method=='POST':
@@ -182,6 +185,7 @@ def edit_user(uid):
 
 
 @app.route("/delete_user/<string:uid>",methods=['GET'])
+@is_logged_in
 def delete_user(uid):
     con=sql.connect("db_web.db")
 
@@ -196,6 +200,13 @@ def delete_user(uid):
 
     flash('Currency Deleted','warning')
     return redirect(url_for("index"))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    error = 'Error 404, Page Not Found.'
+    return render_template('404.html', error=error), 404
+
 
 if __name__=='__main__':
     app.run(debug=True)

@@ -1,7 +1,7 @@
 
 <html>
   <head>
-    <title>HTML Collection</title>
+    <title>Vick's Coin Collection</title>
     <link rel="icon" type="image/png" href="https://en.numista.com/catalogue/photos/inde/3030-original.jpg">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -10,13 +10,119 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+    <style>
+      #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 12px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+      }
+
+      #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+      }
+
+      #myTable th, #myTable td {
+        text-align: left;
+        padding: 12px;
+      }
+
+      #myTable tr {
+        border-bottom: 1px solid #ddd;
+      }
+
+      #myTable tr.header, #myTable tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+
+    <script>
+      function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[3];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+
+      function sortTable(n) {
+        var table,
+          rows,
+          switching,
+          i,
+          x,
+          y,
+          shouldSwitch,
+          dir,
+          switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+
+        dir = "asc";
+        while (switching) {
+          switching = false;
+          rows = table.getElementsByTagName("TR");
+
+          for (i = 1; i < rows.length - 1; i++) { 
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+
+            if (dir == "asc") {
+              if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                shouldSwitch = true;
+                break;
+              }
+            } else if (dir == "desc") {
+              if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+
+                shouldSwitch = true;
+                break;
+              }
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+
+          } else {
+            if (switchcount == 0 && dir == "asc") {
+              dir = "desc";
+              switching = true;
+            }
+          }
+        }
+      }
+    </script>
+
   </head>
   <body>
+    <br><br>
 
     <nav class="navbar navbar-expand-md bg-light navbar-light">
       <div class='container'>
         <!-- Brand -->
-        <a class="navbar-brand" href="/">Add HTML Page</a>
+        <a class="btn btn-warning" href="/">Home</a>
 
         <!-- Toggler/collapsibe Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
